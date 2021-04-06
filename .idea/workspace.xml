@@ -50,5 +50,9 @@
       <screen x="0" y="0" width="1920" height="1034" />
     </state>
     <state x="461" y="158" key="SettingsEditor/0.0.1920.1034@0.0.1920.1034" timestamp="1617716256068" />
+    <state x="757" y="166" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1617721619466">
+      <screen x="0" y="0" width="1920" height="1034" />
+    </state>
+    <state x="757" y="166" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1920.1034@0.0.1920.1034" timestamp="1617721619466" />
   </component>
 </project>
