@@ -18,10 +18,12 @@ class Discriminator(object) :
         self.Discriminator = self.model()
 
         # model compile
-        self.Discriminator.complie(loss='binary_crossentropy', optimizer=self.OPTIMIZER, metrics=['accuracy'])
+        self.Discriminator.compile(loss='binary_crossentropy', optimizer=self.OPTIMIZER, metrics=['accuracy'])
+
+        # self.save_model()
 
         # summary
-        self.Discriminator.summary()
+        self.summary()
 
     # model define
     def model(self):

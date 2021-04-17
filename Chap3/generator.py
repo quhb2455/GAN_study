@@ -20,16 +20,17 @@ class Generator(object) :
         self.latent_space = np.random.normal(0,1,(self.LATENT_SPACE_SIZE,))
 
         self.Generator = self.model()
-        self.Generator.complie(loss='binary_crossentropy',
+        self.Generator.compile(loss='binary_crossentropy',
                                optimizer=self.OPTIMIZER)
-        self.Generator.summary()
+        # self.save_model()
+        self.summary()
 
     def model (self, block_starting_szie =128, num_blocks=4) :
 
         block_size = block_starting_szie
 
         model=Sequential()
-        model.add(Dense(block_size, input_shape=(self.LATENT_SPACE_SIZE)))
+        model.add(Dense(block_size, input_shape=(self.LATENT_SPACE_SIZE,)))
         model.add(LeakyReLU(alpha=0.2))
         model.add(BatchNormalization(momentum=0.8))
 
