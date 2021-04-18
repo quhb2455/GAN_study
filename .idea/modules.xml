@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Chap4/.idea/Chap4.iml" filepath="$PROJECT_DIR$/Chap4/.idea/Chap4.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/GAN_study.iml" filepath="$PROJECT_DIR$/.idea/GAN_study.iml" />
     </modules>
   </component>
