@@ -28,28 +28,28 @@ class Generator(object) :
                                    optimizer=self.OPTIMIZER,
                                    metrics=['accuracy'])
 
-        self.save_model()
+        # self.save_model()
         self.summary()
 
     def dc_model(self):
         model=Sequential()
-        model.add(Dense(256*8*8, activation=LeakyReLU(0.2), input_dim=self.LATENT_SPACE_SIZE))
+        model.add(Dense(256*8*8, activation=LeakyReLU(alpha=0.2), input_dim=self.LATENT_SPACE_SIZE))
         model.add(BatchNormalization())
         model.add(Reshape((8,8,256)))
         model.add(UpSampling2D())
 
         # 16 x 16
-        model.add(Conv2D(128,5,5, border_mode='same', activation=LeakyReLU(0.2)))
+        model.add(Convolution2D(128,(5,5), padding='same', activation=LeakyReLU(0.2)))
         model.add(BatchNormalization())
         model.add(UpSampling2D())
 
         # 32 x 32
-        model.add(Conv2D(64,5,5,border_mode='same', activation=LeakyReLU(0.2)))
+        model.add(Convolution2D(64,(5,5),padding='same', activation=LeakyReLU(0.2)))
         model.add(BatchNormalization())
         model.add(UpSampling2D())
 
         # 3 x 64 x 64
-        model.add(Conv2D(self.C, 5,5, border_mode='same', activation='tanh'))
+        model.add(Convolution2D(self.C, (5,5), padding='same', activation='tanh'))
 
         return model
 
@@ -75,5 +75,5 @@ class Generator(object) :
         return self.Generator.summary()
 
     def save_model(self):
-        plot_model(self.Generator.model,
+        plot_model(self.Generator,
                    to_file='./model/Generator.png')

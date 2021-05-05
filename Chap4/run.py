@@ -1,4 +1,4 @@
-from .train import Trainer
+from train import Trainer
 
 if __name__ == "__main__":
 
@@ -13,17 +13,18 @@ if __name__ == "__main__":
     # train
     EPOCHS = 100
     BATCH = 128
-    CHECKPOINT = 10
-    PATH = "./lsun_datasets/church_outdoor_train_lmdb_gray.npy"
+    CHECKPOINT = 50
+    PATH = "./church_outdoor_train_lmdb_color.npy"
     # MODEL_TYPE = -1
 
     trainer = Trainer(height=HEIGHT,
                       width=WIDTH,
-                      channels=CHANNEL,
+                      channel=CHANNEL,
                       latent_size=LATENT_SPACE_SIZE,
                       epochs=EPOCHS,
                       batch=BATCH,
                       checkpoint=CHECKPOINT,
-                      model_type='DCGAN')
+                      model_type='DCGAN',
+                      data_path=PATH)
 
     trainer.train()

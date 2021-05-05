@@ -1,6 +1,6 @@
 import numpy as np
+from random import randint
 
-a = np.ones([16,28,28,1])
-b = np.zeros([1,28,28,1])
-c = np.concatenate([a, b])
-print(c.shape)
+a = np.load('./church_outdoor_train_lmdb_gray.npy')
+
+print(a.shape)

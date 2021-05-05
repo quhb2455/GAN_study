@@ -9,7 +9,7 @@ from keras.utils import plot_model
 
 
 class Discriminator(object) :
-    def __init__(self, width=28, height=28, channel=1, latent_szie=100, model_type='simple'):
+    def __init__(self, width=28, height=28, channel=1, latent_size=100, model_type='simple'):
         self.W = width
         self.H = height
         self.C = channel
@@ -29,27 +29,27 @@ class Discriminator(object) :
                                        optimizer=self.OPTIMIZER,
                                        metrics=['accuracy'])
 
-        self.save_model()
+        # self.save_model()
         self.summary()
 
     def dc_model(self):
         model=Sequential()
-        model.add(Conv2D(64,5,5, subsample=(2,2),
+        model.add(Convolution2D(64,(5,5), strides=(2,2),
                          input_shape=(self.W, self.H, self.C),
-                         border_mode='same',
+                         padding='same',
                          activation=LeakyReLU(alpha=0.2)))
         model.add(Dropout(0.3))
         model.add(BatchNormalization())
 
-        model.add(Conv2D(128, 5, 5, subsample=(2,2),
-                         border_mode='same',
+        model.add(Convolution2D(128, (5, 5), strides=(2,2),
+                         padding='same',
                          activation=LeakyReLU(alpha=0.2)))
         model.add(Dropout(0.3))
         model.add(BatchNormalization())
 
         model.add(Flatten())
         model.add(Dense(1, activation='sigmoid'))
-        return
+        return model
 
     def model(self):
         model = Sequential()
