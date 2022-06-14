@@ -24,20 +24,20 @@ classes = ('balloon', )
 data = dict(
     train=dict(
         type=dataset_type,
-        ann_file='../../data/balloon_dataset/balloon/train/coco_via_region_data.json',
-        img_prefix='../../data/balloon_dataset/balloon/train/',
+        ann_file='../../data/balloon/train/coco_via_region_data.json',
+        img_prefix='../../data/balloon/train/',
         classes=classes,
     ),
     val=dict(
         type=dataset_type,
-        ann_file='../../data/balloon_dataset/balloon/val/coco_via_region_data.json',
-        img_prefix='../../data/balloon_dataset/balloon/val/',
+        ann_file='../../data/balloon/val/coco_via_region_data.json',
+        img_prefix='../../data/balloon/val/',
         classes=classes,
     ),
     test=dict(
         type=dataset_type,
-        ann_file='../../data/balloon_dataset/balloon/val/coco_via_region_data.json',
-        img_prefix='../../data/balloon_dataset/balloon/val/',
+        ann_file='../../data/balloon/val/coco_via_region_data.json',
+        img_prefix='../../data/balloon/val/',
         classes=classes
     )
 )

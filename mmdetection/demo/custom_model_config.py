@@ -7,14 +7,15 @@ _base_ = [
 model = dict(
     # set None to avoid loading ImageNet pretrained backbone,
     # instead here we set `load_from` to load from COCO pretrained detectors.
-    backbone=dict(init_cfg=None),
+    # backbone=dict(init_cfg=None),
 
     # replace neck from defaultly `FPN` to our new implemented module `custom_model`
     neck=dict(
-        type='CUSTOM_MODEL',
+        type='NASFPN',
         in_channels=[256, 512, 1024, 2048],
         out_channels=256,
-        num_outs=5
+        num_outs=5,
+        stack_times=3,
     ),
 
     roi_head=dict(
@@ -24,7 +25,8 @@ model = dict(
                 in_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
-                num_classes=90, # coco set은 label이 90개임
+                # change the number of classes from defaultly COCO to cityscapes
+                num_classes=80,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -34,17 +36,15 @@ model = dict(
                     type='CrossEntropyLoss',
                     use_sigmoid=False,
                     loss_weight=1.0),
-                loss_bbox=dict(
-                    type='SmoothL1Loss',
-                    beta=1.0,
-                    loss_weight=1.0)),
+                loss_bbox=dict(type='SmoothL1Loss', beta=1.0,
+                               loss_weight=1.0)),
             dict(
                 type='Shared2FCBBoxHead',
                 in_channels=256,
                 fc_out_channels=1024,
                 roi_feat_size=7,
                 # change the number of classes from defaultly COCO to cityscapes
-                num_classes=90,
+                num_classes=80,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -62,7 +62,7 @@ model = dict(
                 fc_out_channels=1024,
                 roi_feat_size=7,
                 # change the number of classes from defaultly COCO to cityscapes
-                num_classes=90,
+                num_classes=80,
                 bbox_coder=dict(
                     type='DeltaXYWHBBoxCoder',
                     target_means=[0., 0., 0., 0.],
@@ -80,11 +80,9 @@ model = dict(
             in_channels=256,
             conv_out_channels=256,
             # change the number of classes from defaultly COCO to cityscapes
-            num_classes=90,
+            num_classes=80,
             loss_mask=dict(
-                type='CrossEntropyLoss', use_mask=True, loss_weight=1.0))
-    )
-)
+                type='CrossEntropyLoss', use_mask=True, loss_weight=1.0))))
 
 # over-write `train_pipeline` for new added `AutoAugment` training setting
 img_norm_cfg = dict(
@@ -96,11 +94,11 @@ train_pipeline = [
         type='AutoAugment',
         policies=[
             [dict(
-                 type='Rotate',
-                 level=5,
-                 img_fill_val=(124, 116, 104),
-                 prob=0.5,
-                 scale=1)
+                type='Rotate',
+                level=5,
+                img_fill_val=(124, 116, 104),
+                prob=0.5,
+                scale=1)
             ],
             [dict(type='Rotate', level=7, img_fill_val=(124, 116, 104)),
              dict(
@@ -108,10 +106,10 @@ train_pipeline = [
                  level=5,
                  prob=0.5,
                  img_fill_val=(124, 116, 104))
-            ],
+             ],
         ]),
-    dict(
-        type='Resize', img_scale=[(2048, 800), (2048, 1024)], keep_ratio=True),
+    # dict(
+    #     type='Resize', img_scale=[(2048, 800), (2048, 1024)], keep_ratio=True),
     dict(type='RandomFlip', flip_ratio=0.5),
     dict(type='Normalize', **img_norm_cfg),
     dict(type='Pad', size_divisor=32),
@@ -124,11 +122,12 @@ data = dict(
     samples_per_gpu=1,
     workers_per_gpu=3,
     # over-write `pipeline` with new training pipeline setting
-    train=dict(dataset=dict(pipeline=train_pipeline)))
+    train=dict(pipeline=train_pipeline))
 
 # Set optimizer
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=None)
+
 # Set customized learning policy
 lr_config = dict(
     policy='step',

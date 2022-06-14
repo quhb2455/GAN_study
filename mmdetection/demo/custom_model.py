@@ -1,7 +1,8 @@
 from ..builder import NECKS
+from torch import nn
 
 @NECKS.register_module()
-class AugFPN(nn.Module) :
+class CUSTOM_MODEL(nn.Module) :
     def __init__(self,
                  in_channel,
                  out_channel,
